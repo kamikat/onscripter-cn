@@ -25,8 +25,6 @@ import android.view.SubMenu;
 import android.view.MenuItem;
 import android.os.PowerManager;
 import android.os.Environment;
-import android.os.Message;
-import android.os.Handler;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
@@ -174,25 +172,6 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
             }
         }
     }
-
-	private void runDownloader() {
-		String version_filename = getResources().getString(R.string.download_version);
-		File file = new File(gCurrentDirectoryPath + "/" + version_filename);
-		if (file.exists() == false){
-			progDialog = new ProgressDialog(this);
-			progDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			progDialog.setMessage("Downloading archives from Internet:");
-			progDialog.show();
-
-			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-			wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "ONScripter");
-			wakeLock.acquire();
-
-		}
-		else{
-			runSDLApp();
-		}
-	}
 
 	private void runSDLApp() {
 		nativeInitJavaCallbacks();
@@ -513,27 +492,6 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 		super.onDestroy();
 	}
 
-	final Handler handler = new Handler(){
-		public void handleMessage(Message msg){
-			int current = msg.getData().getInt("current");
-			if (current == -1){
-				progDialog.dismiss();
-				runSDLApp();
-			}
-			else if (current == -2){
-				progDialog.dismiss();
-				showErrorDialog(msg.getData().getString("message"));
-			}
-			else{
-				progDialog.setMessage(msg.getData().getString("message"));
-				int total = msg.getData().getInt("total");
-				if (total != progDialog.getMax())
-					progDialog.setMax(total);
-				progDialog.setProgress(current);
-			}
-		}
-	};
-
 	private void showErrorDialog(String mes)
 	{
 		alertDialogBuilder.setTitle("Error");
@@ -547,17 +505,6 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 		alertDialog.show();
 	}
 
-	public void sendMessage(int current, int total, String str)
-	{
-		Message msg = handler.obtainMessage();
-		Bundle b = new Bundle();
-		b.putInt("total", total);
-		b.putInt("current", current);
-		b.putString("message", str);
-		msg.setData(b);
-		handler.sendMessage(msg);
-	}
-
 	private DemoGLSurfaceView mGLView = null;
 	private AudioThread mAudioThread = null;
 	private PowerManager.WakeLock wakeLock = null;
@@ -568,9 +515,7 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 	private native int nativeInitJavaCallbacks();
 	private native int nativeGetWidth();
 	private native int nativeGetHeight();
-	private DataDownloader downloader = null;
 	private AlertDialog.Builder alertDialogBuilder = null;
-	private ProgressDialog progDialog = null;
     
 	static {
 		System.loadLibrary("mad");
