@@ -1,0 +1,9 @@
+*.class
+*.apk
+bin/*
+gen/*
+libs/armeabi/*
+target/*
+obj/*
+.settings/*
+lint.xml
