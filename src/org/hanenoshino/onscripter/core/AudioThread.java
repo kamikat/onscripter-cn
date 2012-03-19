@@ -1,28 +1,21 @@
-package jp.ogapee.onscripter;
+package org.hanenoshino.onscripter.core;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.KeyEvent;
-import android.view.Window;
-import android.view.WindowManager;
 import android.media.AudioTrack;
 import android.media.AudioManager;
 import android.media.AudioFormat;
-import java.io.*;
-import java.nio.ByteBuffer;
-import android.util.Log;
 import java.lang.Thread;
 
+import org.hanenoshino.onscripter.misc.NativeReferenced;
 
-class AudioThread {
+@NativeReferenced
+public class AudioThread {
 
-	private Activity mParent;
+	private Context mParent;
 	private AudioTrack mAudio;
 	private byte[] mAudioBuffer;
 
-	public AudioThread(Activity parent)
+	public AudioThread(Context parent)
 	{
 		mParent = parent;
 		mAudio = null;
@@ -30,12 +23,14 @@ class AudioThread {
 		nativeAudioInitJavaCallbacks();
 	}
 	
+	@NativeReferenced
 	public int fillBuffer()
 	{
 		mAudio.write( mAudioBuffer, 0, mAudioBuffer.length );
 		return 1;
 	}
-	
+
+	@NativeReferenced
 	public int initAudio(int rate, int channels, int encoding, int bufSize)
 	{
 		if( mAudio == null )
@@ -60,12 +55,14 @@ class AudioThread {
 		}
 		return mAudioBuffer.length;
 	}
-	
+
+	@NativeReferenced
 	public byte[] getBuffer()
 	{
 		return mAudioBuffer;
 	}
-	
+
+	@NativeReferenced
 	public int deinitAudio()
 	{
 		if( mAudio != null )
@@ -77,7 +74,8 @@ class AudioThread {
 		mAudioBuffer = null;
 		return 1;
 	}
-	
+
+	@NativeReferenced
 	public int initAudioThread()
 	{
 		// Make audio thread priority higher so audio thread won't get underrun

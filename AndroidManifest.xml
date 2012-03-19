@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="jp.ogapee.onscripter"
+      package="org.hanenoshino.onscripter"
       android:versionCode="20120310"
       android:versionName="20120310"
       android:installLocation="preferExternal">
     <application android:label="@string/app_name" android:icon="@drawable/icon">
-        <activity android:name=".ONScripter"
+        <activity android:name=".ui.LauncherActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="landscape"
                   android:configChanges="orientation|keyboardHidden"
@@ -19,6 +19,4 @@
     <uses-sdk android:minSdkVersion="4" />
     <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-<!--    <uses-permission android:name="com.android.vending.CHECK_LICENSE"></uses-permission>-->
-<!--    <uses-permission android:name="android.permission.INTERNET"></uses-permission>-->
 </manifest> 

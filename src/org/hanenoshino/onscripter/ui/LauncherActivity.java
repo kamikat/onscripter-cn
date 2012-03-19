@@ -1,42 +1,41 @@
-package jp.ogapee.onscripter;
+package org.hanenoshino.onscripter.ui;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import org.hanenoshino.onscripter.R;
+
+import org.hanenoshino.onscripter.core.ONScripter;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Bundle;
-import android.content.Context;
 import android.graphics.Color;
-import android.view.View;
+import android.os.Bundle;
+import android.os.Environment;
 import android.view.View.OnClickListener;
+import android.view.Display;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.Display;
-import android.view.Menu;
-import android.view.SubMenu;
-import android.view.MenuItem;
-import android.os.PowerManager;
-import android.os.Environment;
-import android.widget.TextView;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.util.Log;
-import android.net.Uri;
+import android.widget.ListView;
+import android.widget.TextView;
 
-public class ONScripter extends Activity implements AdapterView.OnItemClickListener
-{
+public class LauncherActivity extends Activity implements AdapterView.OnItemClickListener {
 
 	// Launcher contributed by katane-san
 	
@@ -64,6 +63,7 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
     }
 
     private void setupDirectorySelector() {
+    	
         mDirectoryFiles = mCurrentDirectory.listFiles(new FileFilter() {
                 public boolean accept(File file) {
                     return (!file.isHidden() && file.isDirectory());
@@ -143,8 +143,7 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 
         if (mDirectoryFiles.length == 0){
             setupDirectorySelector();
-        }
-        else{
+        }else{
             mDirectoryFiles = mCurrentDirectory.listFiles(new FileFilter() {
                     public boolean accept(File file) {
                         return (file.isFile() && 
@@ -165,8 +164,7 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
    
                 mCurrentDirectory = mOldCurrentDirectory;
                 setupDirectorySelector();
-            }
-            else{
+            }else{
                 gDisableRescale = checkDR.isChecked();
                 runSDLApp();
             }
@@ -174,16 +172,12 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
     }
 
 	private void runSDLApp() {
-		nativeInitJavaCallbacks();
+		
 
-		mAudioThread = new AudioThread(this);
-		mGLView = new DemoGLSurfaceView(this);
-		mGLView.setFocusableInTouchMode(true);
-		mGLView.setFocusable(true);
-		mGLView.requestFocus();
+		mGLView = new ONScripterView(this, gCurrentDirectoryPath, gDisableRescale);
 
-		int game_width  = nativeGetWidth();
-		int game_height = nativeGetHeight();
+		int game_height = mGLView.height();
+		int game_width = mGLView.width();
 
 		Display disp = ((WindowManager)this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		int dw = disp.getWidth();
@@ -272,11 +266,6 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 
 		setContentView(layout);
 
-		if (wakeLock == null){
-			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-			wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "ONScripter");
-			wakeLock.acquire();
-		}
 	}
 
 	public void resetLayout()
@@ -333,21 +322,6 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 		layout.updateViewLayout(layout1, new LinearLayout.LayoutParams(w1, h1));
 		layout.updateViewLayout(layout2, new LinearLayout.LayoutParams(w2, h2));
 		layout.updateViewLayout(layout3, new LinearLayout.LayoutParams(dw-screen_w-w1-w2, dh-screen_h-h1-h2));
-	}
-
-	public void playVideo(char[] filename){
-		try{
-			String filename2 = "file:/" + gCurrentDirectoryPath + "/" + new String(filename);
-			filename2 = filename2.replace('\\', '/');
-			Log.v("ONS", "playVideo: " + filename2);
-			Uri uri = Uri.parse(filename2);
-			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setDataAndType(uri, "video/*");
-			startActivityForResult(i, -1);
-		}
-		catch(Exception e){
-			Log.e("ONS", "playVideo error:  " + e.getClass().getName());
-		}
 	}
 
     /** Called when the activity is first created. */
@@ -454,26 +428,17 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 	@Override
 	protected void onPause()
 	{
-		// TODO: if application pauses it's screen is messed up
-		if( wakeLock != null )
-			wakeLock.release();
 		super.onPause();
 		if( mGLView != null )
 			mGLView.onPause();
-		if( mAudioThread != null )
-			mAudioThread.onPause();
 	}
 
 	@Override
 	protected void onResume()
 	{
-		if( wakeLock != null && !wakeLock.isHeld() )
-			wakeLock.acquire();
 		super.onResume();
 		if( mGLView != null )
 			mGLView.onResume();
-		if( mAudioThread != null )
-			mAudioThread.onResume();
 	}
 
 	@Override
@@ -505,27 +470,12 @@ public class ONScripter extends Activity implements AdapterView.OnItemClickListe
 		alertDialog.show();
 	}
 
-	private DemoGLSurfaceView mGLView = null;
-	private AudioThread mAudioThread = null;
-	private PowerManager.WakeLock wakeLock = null;
-	public static String gCurrentDirectoryPath;
-	public static Boolean gDisableRescale = false;
-	public static Boolean gWideScreen = false;
+	private ONScripter mGLView = null;
+	
 	public static CheckBox checkDR = null;
-	private native int nativeInitJavaCallbacks();
-	private native int nativeGetWidth();
-	private native int nativeGetHeight();
 	private AlertDialog.Builder alertDialogBuilder = null;
-    
-	static {
-		System.loadLibrary("mad");
-		System.loadLibrary("bz2");
-		System.loadLibrary("tremor");
-		System.loadLibrary("sdl");
-		System.loadLibrary("sdl_mixer");
-		System.loadLibrary("sdl_image");
-		System.loadLibrary("sdl_ttf");
-		System.loadLibrary("application");
-		System.loadLibrary("sdl_main");
-	}
+	
+	private static String gCurrentDirectoryPath;
+	private static Boolean gDisableRescale = false;
+	
 }
