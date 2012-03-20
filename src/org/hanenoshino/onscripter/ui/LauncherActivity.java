@@ -7,8 +7,6 @@ import java.util.Comparator;
 
 import org.hanenoshino.onscripter.R;
 
-import org.hanenoshino.onscripter.core.ONScripter;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -173,6 +171,7 @@ public class LauncherActivity extends Activity implements AdapterView.OnItemClic
 
 	private void runSDLApp() {
 		
+		ONScripterView.loadLibrary();
 
 		mGLView = new ONScripterView(this, gCurrentDirectoryPath, gDisableRescale);
 
@@ -470,7 +469,7 @@ public class LauncherActivity extends Activity implements AdapterView.OnItemClic
 		alertDialog.show();
 	}
 
-	private ONScripter mGLView = null;
+	private ONScripterView mGLView = null;
 	
 	public static CheckBox checkDR = null;
 	private AlertDialog.Builder alertDialogBuilder = null;

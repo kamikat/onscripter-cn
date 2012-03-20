@@ -50,7 +50,11 @@ public class ONScripter extends DemoGLSurfaceView
 	private native int nativeGetWidth();
 	private native int nativeGetHeight();
     
-	static {
+	public static void loadLibrary(){
+		loadLibrary("");
+	}
+	
+	public static void loadLibrary(String locale){
 		System.loadLibrary("mad");
 		System.loadLibrary("bz2");
 		System.loadLibrary("tremor");
@@ -58,7 +62,8 @@ public class ONScripter extends DemoGLSurfaceView
 		System.loadLibrary("sdl_mixer");
 		System.loadLibrary("sdl_image");
 		System.loadLibrary("sdl_ttf");
-		System.loadLibrary("application");
+		System.loadLibrary("application" + locale);
 		System.loadLibrary("sdl_main");
 	}
+	
 }
