@@ -1,0 +1,22 @@
+ONScripter for Android (multilang) is a fork of ONScripter Project 
+by ogapee and the ONScripter. For more information, visit:
+http://onscripter.sourceforge.jp/onscripter.html
+http://onscripter.sourceforge.jp/android/android.html
+
+Aimed at make the ONScripter on android more usable and comfortable to use,
+especially the support for GBK,BIG5,SHIFT-JIS encoding.
+
+Extend the Launcher to auto search for game icons and other cool functions!
+
+The locale support layer is ported from natdon version of ONScripter-GBK
+originally written by John_he. And there are more function to be ported 
+from the Project.
+
+For details about the natdon modified version, see
+http://code.google.com/p/onscripter/
+
+The native part of the project is based on the onscripter-20120317
+
+Code refactor of Android Java Project by hanenoshino
+Locale layer patch export by hanenoshino
+
