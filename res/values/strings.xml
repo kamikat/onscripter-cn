@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <string name="app_name">ONScripter</string>
     <string name="version">ONScripter 20120310\nStudio O.G.A. Ogapee</string>
-    <bool name="use_launcher">true</bool>
+    
+    <!-- Default Configurations -->
     <bool name="button_visible">true</bool>
     <bool name="screen_centered">false</bool>
-    <string name="download_version">.20120310</string>
 
+    <!-- Side Control Buttons -->
     <string name="button_rclick">Right Click</string>
     <string name="button_lclick">Left Click</string>
     <string name="button_up">Up</string>
     <string name="button_down">Down</string>
+    
+    <!-- Menu Items -->
     <string name="menu_automode">Automode</string>
     <string name="menu_skip">Skip</string>
     <string name="menu_speed">Change Speed</string>
@@ -21,4 +25,17 @@
     <string name="menu_center">Show at the Center</string>
     <string name="menu_version">Version</string>
     <string name="menu_quit">Quit</string>
+    
+    <!-- Messages -->
+    <string name="warning">WARNING</string>
+    <string name="error">ERROR</string>
+    <string name="information">INFORMATION</string>
+    <string name="no_sd_card">Could not find SDcard on this device.</string>
+    <string name="no_font">Could not find default.ttf for \'%s\'.</string>
+    <string name="create_shortcut">Create shortcut for \'%s\'?</string>
+    <string name="okay">OKay</string>
+    <string name="cancel">Cancel</string>
+    <string name="known">I Know</string>
+    <string name="quit">Quit</string>
+    
 </resources>
