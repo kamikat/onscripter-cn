@@ -20,3 +20,7 @@ The native part of the project is based on the onscripter-20120317
 Code refactor of Android Java Project by hanenoshino
 Locale layer patch export by hanenoshino
 
+Repository for holding the changes of the onscripter:
+https://github.com/hanenoshino/onscripter-versiontrack
+
+=.= Sorry for not using submodule...
