@@ -236,6 +236,7 @@ public class LauncherActivity extends Activity implements AdapterView.OnItemClic
 		String iconPath = path + "/ICON.PNG";
 		Drawable d = Drawable.createFromPath(iconPath);
 		if (d != null) {
+			
 //			TODO shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON, Bitmap);
 		} else {
 			ShortcutIconResource iconRes = Intent.ShortcutIconResource
