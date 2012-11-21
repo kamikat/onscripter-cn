@@ -1,5 +1,5 @@
 # The namespace in Java file, with dots replaced with underscores
-SDL_JAVA_PACKAGE_PATH := org_hanenoshino_onscripter_core
+SDL_JAVA_PACKAGE_PATH := jp_ogapee_onscripter
 
 # Path to files with application data - they should be downloaded from Internet on first app run inside
 # Java sources, or unpacked from resources (TODO)

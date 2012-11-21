@@ -129,7 +129,9 @@ int ANDROID_VideoInit(_THIS)
 	mode.w = sWindowWidth;
 	mode.h = sWindowHeight;
 	mode.refresh_rate = 0;
-	mode.format = SDL_PIXELFORMAT_RGB565;
+	// modified in 2012.04.14 by Ogapee
+	//mode.format = SDL_PIXELFORMAT_RGB565;
+	mode.format = SDL_PIXELFORMAT_ABGR8888;
 	mode.driverdata = NULL;
 
 	SDL_zero(display);
@@ -148,7 +150,9 @@ void ANDROID_GetDisplayModes(_THIS, SDL_VideoDisplay * display)
 	mode.w = sWindowWidth;
 	mode.h = sWindowHeight;
 	mode.refresh_rate = 0;
-	mode.format = SDL_PIXELFORMAT_RGB565;
+	// modified in 2012.04.14 by Ogapee
+	//mode.format = SDL_PIXELFORMAT_RGB565;
+	mode.format = SDL_PIXELFORMAT_ABGR8888;
 	mode.driverdata = NULL;
 	SDL_AddDisplayMode(display, &mode);
 

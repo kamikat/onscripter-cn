@@ -426,6 +426,9 @@ SDL_ResizeVideoMode(int width, int height, int bpp, Uint32 flags)
     void *pixels;
     int pitch;
 
+    // modified in 2012.04.14 by Ogapee
+    return -1;
+
     /* We can't resize something we don't have... */
     if (!SDL_VideoWindow) {
         return -1;

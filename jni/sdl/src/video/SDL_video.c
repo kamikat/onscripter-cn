@@ -1205,10 +1205,14 @@ SDL_GetWindowSize(SDL_Window * window, int *w, int *h)
 {
     if (window) {
         if (w) {
-            *w = window->w;
+            // modified in 2012.04.14 by Ogapee
+            //*w = window->w;
+            *w = window->display->desktop_mode.w;
         }
         if (h) {
-            *h = window->h;
+            // modified in 2012.04.14 by Ogapee
+            //*h = window->h;
+            *h = window->display->desktop_mode.h;
         }
     } else {
         if (w) {
@@ -1660,6 +1664,11 @@ SDL_CreateTexture(Uint32 format, int access, int w, int h)
     if (!texture) {
         SDL_OutOfMemory();
         return 0;
+    }
+    // modified in 2012.04.14 by Ogapee
+    if (w < SDL_CurrentDisplay->current_mode.w){
+        w = SDL_CurrentDisplay->current_mode.w;
+        h = SDL_CurrentDisplay->current_mode.h;
     }
     texture->magic = &_this->texture_magic;
     texture->format = format;
@@ -2561,7 +2570,8 @@ SDL_RenderCopy(SDL_Texture * texture, const SDL_Rect * srcrect,
         return -1;
     }
     window = renderer->window;
-
+    // modified in 2012.04.14 by Ogapee
+#if 0
     real_srcrect.x = 0;
     real_srcrect.y = 0;
     real_srcrect.w = texture->w;
@@ -2594,7 +2604,16 @@ SDL_RenderCopy(SDL_Texture * texture, const SDL_Rect * srcrect,
             real_srcrect.h += (deltah * real_srcrect.h) / dstrect->h;
         }
     }
-
+#else
+    real_srcrect.x = 0;
+    real_srcrect.y = 0;
+    real_srcrect.w = window->w;
+    real_srcrect.h = window->h;
+    real_dstrect.x = 0;
+    real_dstrect.y = 0;
+    real_dstrect.w = SDL_CurrentDisplay->current_mode.w;
+    real_dstrect.h = SDL_CurrentDisplay->current_mode.h;
+#endif
     return renderer->RenderCopy(renderer, texture, &real_srcrect,
                                 &real_dstrect);
 }
