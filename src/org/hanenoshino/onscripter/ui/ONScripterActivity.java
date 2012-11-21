@@ -58,7 +58,7 @@ public class ONScripterActivity extends Activity{
 		
 		ONScripterView.loadLibrary(intent.getStringExtra(EXTRA_GAME_LANG));
 		
-		mGLView = new ONScripterView(this, intent.getStringExtra(EXTRA_GAME_PATH), false);
+		mGLView = new ONScripterView(this, intent.getStringExtra(EXTRA_GAME_PATH), true);
 		
 		runSDLApp();
 		

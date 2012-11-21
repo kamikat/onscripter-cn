@@ -20,13 +20,13 @@ public class DemoGLSurfaceView extends GLSurfaceView_SDL {
 	
 	public DemoGLSurfaceView(
 			Context context, 
-			String currentDirectoryPath, boolean isRescaleDisabled) {
+			String currentDirectoryPath, boolean isRenderFontOutline) {
 		super(context);
 		this.currentDirectoryPath = currentDirectoryPath;
 		mAudioThread = new AudioThread(context);
 		mRenderer = new DemoRenderer(
 				context, 
-				currentDirectoryPath, isRescaleDisabled);
+				currentDirectoryPath, isRenderFontOutline);
 		setRenderer(mRenderer);
 		
 		// View Properties

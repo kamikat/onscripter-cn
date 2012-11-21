@@ -23,8 +23,8 @@ public class ONScripter extends DemoGLSurfaceView
 	}
 	
 	public ONScripter(Activity context, String currentDirectoryPath,
-			boolean isRescaleDisabled) {
-		super(context, currentDirectoryPath, isRescaleDisabled);
+			boolean isRenderFontOutline) {
+		super(context, currentDirectoryPath, isRenderFontOutline);
 		parent = context;
 		nativeInitJavaCallbacks();
 		game_width  = nativeGetWidth();

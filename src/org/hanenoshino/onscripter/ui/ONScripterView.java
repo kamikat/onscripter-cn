@@ -8,8 +8,8 @@ public class ONScripterView extends ONScripter{
 	
 	public ONScripterView(
 			Activity context, 
-			String currentDirectoryPath, boolean isRescaleDisabled) {
-		super(context, currentDirectoryPath, isRescaleDisabled);
+			String currentDirectoryPath, boolean isRenderFontOutline) {
+		super(context, currentDirectoryPath, isRenderFontOutline);
 	}
 	
 }
